@@ -1,0 +1,77 @@
+using Assets;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class Player : MonoBehaviour
+{
+
+    public float speed;
+    private SpriteRenderer spriteRenderer;
+    private BoxCollider2D boxCollider;
+
+    private int currentWalkingIndex = 0;
+    public Sprite[] walkingSprites;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        boxCollider = GetComponent<BoxCollider2D>();
+    }
+
+    void FixedUpdate()
+    {
+        var x = Input.GetAxisRaw("Horizontal") * speed * Time.deltaTime;
+        var y = Input.GetAxisRaw("Vertical") * speed * Time.deltaTime;
+
+        if (x != 0 || y != 0)
+        {
+            currentWalkingIndex++;
+            if (currentWalkingIndex > walkingSprites.Length * 7 - 1)
+            {
+                currentWalkingIndex = 0;
+            }
+            spriteRenderer.sprite = walkingSprites[currentWalkingIndex / 7];
+        }
+        else
+        {
+            currentWalkingIndex = 0;
+            spriteRenderer.sprite = walkingSprites[currentWalkingIndex];
+        }
+
+        var moveDelta = new Vector3(x, y, 0);
+
+        var hit = Physics2D.BoxCast(transform.position, boxCollider.size, 0, new Vector2(0, moveDelta.y), Mathf.Abs(moveDelta.y * Time.deltaTime), LayerMask.GetMask("Blocking"));
+        if (hit.collider == null)
+        {
+            transform.Translate(0, moveDelta.y * Time.deltaTime,0);
+        }
+        hit = Physics2D.BoxCast(transform.position, boxCollider.size, 0, new Vector2(moveDelta.x, 0), Mathf.Abs(moveDelta.x * Time.deltaTime), LayerMask.GetMask("Blocking"));
+        if (hit.collider == null)
+        {
+            transform.Translate(moveDelta.x * Time.deltaTime, 0, 0);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Enemy")
+        {
+            CombatManager.PlayerSprite = walkingSprites[0];
+            CombatManager.EnemySprite = collision.GetComponent<SpriteRenderer>().sprite;
+            CombatManager.EnemyFighter = new FighterPieuvre() 
+            { 
+                KnownMoves = new List<IFightingMove>() { new MoveSquirt() }.ToArray()
+            };
+            CombatManager.PlayerFighter = new FighterJuju()
+            {
+                KnownMoves = new List<IFightingMove>() { new MoveOya() }.ToArray()
+            };
+
+            SceneManager.LoadScene("Combat");
+        }
+    }
+}
