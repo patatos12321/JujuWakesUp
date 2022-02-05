@@ -60,12 +60,11 @@ public class Player : MonoBehaviour
     {
         if (collision.tag == "Enemy")
         {
-            CombatManager.PlayerSprite = walkingSprites[0];
             CombatManager.EnemySprite = collision.GetComponent<SpriteRenderer>().sprite;
-            CombatManager.EnemyFighter = new FighterPieuvre() 
-            { 
-                KnownMoves = new List<IFightingMove>() { new MoveSquirt() }.ToArray()
-            };
+            CombatManager.EnemyFighter = collision.GetComponent<FighterFactory>().GetFighter();
+
+
+            CombatManager.PlayerSprite = walkingSprites[0];
             CombatManager.PlayerFighter = new FighterJuju()
             {
                 KnownMoves = new List<IFightingMove>() { new MoveOya() }.ToArray()
