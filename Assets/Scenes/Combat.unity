@@ -426,7 +426,7 @@ GameObject:
   - component: {fileID: 870709923}
   - component: {fileID: 870709922}
   m_Layer: 0
-  m_Name: mechant mort
+  m_Name: sound_combat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
