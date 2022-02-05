@@ -10,18 +10,18 @@ public class CombatBehaviour : MonoBehaviour
     private bool InBetweenTurn = true;
     public Text EnemyNameText;
     public Text PlayerNameText;
-    public Text PlayerMoveOneText;
     public SpriteRenderer PlayerRenderer;
     public SpriteRenderer EnemyRenderer;
     public HealthBarBehaviour PlayerHealthBar;
     public HealthBarBehaviour EnemyHealthBar;
+
+    public FightingMovesBehaviour FightingMovesBehaviour;
 
     // Start is called before the first frame update
     void Start()
     {
         EnemyNameText.text = CombatManager.EnemyFighter.FighterName;
         PlayerNameText.text = CombatManager.PlayerFighter.FighterName;
-        PlayerMoveOneText.text = CombatManager.PlayerFighter.FightingMoves.First().MoveName;
 
         PlayerRenderer.sprite = CombatManager.PlayerSprite;
         EnemyRenderer.sprite = CombatManager.EnemySprite;
@@ -31,6 +31,8 @@ public class CombatBehaviour : MonoBehaviour
 
         EnemyHealthBar.MaxHealth = CombatManager.EnemyFighter.MaxHp;
         EnemyHealthBar.CurrentHealth = CombatManager.EnemyFighter.CurrentHp;
+
+        FightingMovesBehaviour.SetFightingMoves(CombatManager.PlayerFighter.FightingMoves.ToArray());
     }
 
     // Update is called once per frame
