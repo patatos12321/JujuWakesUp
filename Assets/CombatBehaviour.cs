@@ -13,6 +13,8 @@ public class CombatBehaviour : MonoBehaviour
     public Text PlayerMoveOneText;
     public SpriteRenderer PlayerRenderer;
     public SpriteRenderer EnemyRenderer;
+    public HealthBarBehaviour PlayerHealthBar;
+    public HealthBarBehaviour EnemyHealthBar;
 
     // Start is called before the first frame update
     void Start()
@@ -23,6 +25,12 @@ public class CombatBehaviour : MonoBehaviour
 
         PlayerRenderer.sprite = CombatManager.PlayerSprite;
         EnemyRenderer.sprite = CombatManager.EnemySprite;
+
+        PlayerHealthBar.MaxHealth = CombatManager.PlayerFighter.MaxHp;
+        PlayerHealthBar.CurrentHealth = CombatManager.PlayerFighter.CurrentHp;
+
+        EnemyHealthBar.MaxHealth = CombatManager.EnemyFighter.MaxHp;
+        EnemyHealthBar.CurrentHealth = CombatManager.EnemyFighter.CurrentHp;
     }
 
     // Update is called once per frame
