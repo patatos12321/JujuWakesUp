@@ -1,10 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class FightingMovesBehaviour : MonoBehaviour
 {
+    public CombatBehaviour CombatBehaviour;
     public IFightingMove[] FightingMoves;
     public Button[] MoveButtons;
     public Text[] MoveTexts;

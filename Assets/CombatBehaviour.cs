@@ -1,23 +1,28 @@
-using System.Linq;
 using Assets;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
+public enum FightState {
+    ChoseMove,
+    Attack
+}
 
 public class CombatBehaviour : MonoBehaviour
 {
     private bool InBetweenTurn = true;
+    public FightState FightState = FightState.ChoseMove;
+
     public Text EnemyNameText;
     public Text PlayerNameText;
+
     public SpriteRenderer PlayerRenderer;
     public SpriteRenderer EnemyRenderer;
+
     public HealthBarBehaviour PlayerHealthBar;
     public HealthBarBehaviour EnemyHealthBar;
 
     public FightingMovesBehaviour FightingMovesBehaviour;
 
-    // Start is called before the first frame update
     void Start()
     {
         EnemyNameText.text = CombatManager.EnemyFighter.FighterName;
@@ -35,9 +40,19 @@ public class CombatBehaviour : MonoBehaviour
         FightingMovesBehaviour.SetFightingMoves(CombatManager.PlayerFighter.FightingMoves.ToArray());
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        switch (FightState)
+        {
+            case FightState.ChoseMove:
+                FightingMovesBehaviour.gameObject.SetActive(true);
+                return;
+            case FightState.Attack:
+                FightingMovesBehaviour.gameObject.SetActive(false);
+                return;
+            default:
+                Debug.LogError("Unable to determine what state I'm in rn...");
+                break;
+        }
     }
 }
