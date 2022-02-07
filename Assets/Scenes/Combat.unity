@@ -242,6 +242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df50167f5e04ec34aa1cc34b7c1413dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FightState: 0
   EnemyNameText: {fileID: 175723736}
   PlayerNameText: {fileID: 1591549954}
   PlayerRenderer: {fileID: 784816437}
@@ -325,6 +326,7 @@ MonoBehaviour:
   - {fileID: 799217017}
   - {fileID: 735098622}
   - {fileID: 1692781224}
+  CombatBehaviour: {fileID: 397306792}
 --- !u!114 &501410625 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5494691908042097237, guid: c2dfb9b13300a334c81209f30e8d94a4, type: 3}
