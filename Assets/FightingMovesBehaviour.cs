@@ -14,7 +14,7 @@ public class FightingMovesBehaviour : MonoBehaviour
     {
         for (int index = 0; index < MoveButtons.Length; index++)
         {
-            MoveButtons[index].onClick.AddListener(() => TaskOnClick(index));
+            MoveButtons[index].onClick.AddListener(() => TaskOnClick(0));
         }
     }
 

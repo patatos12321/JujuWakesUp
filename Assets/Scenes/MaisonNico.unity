@@ -731,6 +731,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StoryTextBehavior: {fileID: 174017622}
   Player: {fileID: 1470061796}
+  Pieuvre: {fileID: 439592526}
 --- !u!4 &590919770
 Transform:
   m_ObjectHideFlags: 0

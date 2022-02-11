@@ -7,6 +7,7 @@ public class MaisonNicoBehavior : MonoBehaviour
 {
     public StoryTextBehavior StoryTextBehavior;
     public Player Player;
+    public GameObject Pieuvre;
 
     // Start is called before the first frame update
     void Start()
@@ -17,6 +18,11 @@ public class MaisonNicoBehavior : MonoBehaviour
             StoryTextBehavior.TextToDisplay = "What is happening? Why is there an octupus in my room??";
         }
         else { StoryTextBehavior.gameObject.SetActive(false); }
+
+        if (Flags.FirstEnemyDefeated)
+        {
+            Destroy(Pieuvre);
+        }
 
         if (CombatManager.playerPosition != new Vector3())
         {

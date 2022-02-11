@@ -56,18 +56,19 @@ public class CombatBehaviour : MonoBehaviour
                     CombatManager.EnemyFighter.CurrentHp = CombatManager.EnemyFighter.CurrentHp - PlayerMove.Damage;
                     EnemyHealthBar.CurrentHealth = CombatManager.EnemyFighter.CurrentHp;
                 }
-                return;
+                break;
             case FightState.Attack:
                 FightingMovesBehaviour.gameObject.SetActive(false);
                 StoryTextBehavior.gameObject.SetActive(true);
-                StoryTextBehavior.TextToDisplay = $"{PlayerNameText} used {PlayerMove.MoveName}.";
+                StoryTextBehavior.TextToDisplay = $"{PlayerNameText.text} used {PlayerMove.MoveName}.";
                 if (StoryTextBehavior.Clicked)
                 {
                     StoryTextBehavior.Clicked = false;
                     StoryTextBehavior.gameObject.SetActive(false);
+                    PlayerMove = null;
                     FightState = FightState.ChoseMove;
                 }
-                return;
+                break;
             default:
                 Debug.LogError("Unable to determine what state I'm in rn...");
                 break;
