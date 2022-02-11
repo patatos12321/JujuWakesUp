@@ -24,6 +24,9 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (Flags.IsPaused)
+            return;
+
         var x = Input.GetAxisRaw("Horizontal") * speed * Time.deltaTime;
         var y = Input.GetAxisRaw("Vertical") * speed * Time.deltaTime;
 
