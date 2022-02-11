@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2711933209792823143}
   - component: {fileID: 2711933209792823142}
   - component: {fileID: 2711933209792823141}
+  - component: {fileID: 2795168850558712427}
   m_Layer: 5
   m_Name: StoryText
   m_TagString: Untagged
@@ -121,6 +122,22 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2795168850558712427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2711933209792823139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 034fa9c84a6736d45a36279abc3b026d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Clicked: 0
+  TextToDisplay: 
+  Button: {fileID: 2711933209792823141}
+  Text: {fileID: 2711933210288956149}
 --- !u!1 &2711933210288956147
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,14 +1,15 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public class FighterJuju : IFighter
+public class FighterPieuvre : IFighter
 {
+    public FighterPieuvre()
+    {
+        CurrentHp = MaxHp;
+    }
     public IFightingMove[] KnownMoves;
-    public string FighterName => "Juju";
-
-    public int MaxHp => 50;
-
-    public int CurrentHp => 50;
-
+    public string FighterName => "Pieuvre";
+    public int MaxHp => 30;
+    public int CurrentHp { get; set; }
     public List<IFightingMove> FightingMoves => KnownMoves.ToList();
 }

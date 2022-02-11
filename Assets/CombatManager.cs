@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Assets
 {
     public class CombatManager : MonoBehaviour
     {
+        public static string SceneToLoadAfterCombat;
+        public static Vector3 playerPosition;
+
         public static Sprite PlayerSprite;
         public static Sprite EnemySprite;
         public static IFighter PlayerFighter;

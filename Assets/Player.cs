@@ -73,6 +73,10 @@ public class Player : MonoBehaviour
                 KnownMoves = new List<IFightingMove>() { new MoveOya() }.ToArray()
             };
 
+            CombatManager.SceneToLoadAfterCombat = SceneManager.GetActiveScene().name;
+            CombatManager.playerPosition = this.transform.position;
+            Flags.FirstEnemyDefeated = true;
+
             SceneManager.LoadScene("Combat");
         }
     }

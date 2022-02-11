@@ -1,5 +1,6 @@
 using Assets;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public enum FightState {
@@ -9,7 +10,7 @@ public enum FightState {
 
 public class CombatBehaviour : MonoBehaviour
 {
-    private bool InBetweenTurn = true;
+    public StoryTextBehavior StoryTextBehavior;
     public FightState FightState = FightState.ChoseMove;
 
     public Text EnemyNameText;
@@ -22,6 +23,8 @@ public class CombatBehaviour : MonoBehaviour
     public HealthBarBehaviour EnemyHealthBar;
 
     public FightingMovesBehaviour FightingMovesBehaviour;
+
+    public IFightingMove PlayerMove;
 
     void Start()
     {
@@ -45,14 +48,34 @@ public class CombatBehaviour : MonoBehaviour
         switch (FightState)
         {
             case FightState.ChoseMove:
+                StoryTextBehavior.gameObject.SetActive(false);
                 FightingMovesBehaviour.gameObject.SetActive(true);
+                if (PlayerMove != null)
+                {
+                    FightState = FightState.Attack;
+                    CombatManager.EnemyFighter.CurrentHp = CombatManager.EnemyFighter.CurrentHp - PlayerMove.Damage;
+                    EnemyHealthBar.CurrentHealth = CombatManager.EnemyFighter.CurrentHp;
+                }
                 return;
             case FightState.Attack:
                 FightingMovesBehaviour.gameObject.SetActive(false);
+                StoryTextBehavior.gameObject.SetActive(true);
+                StoryTextBehavior.TextToDisplay = $"{PlayerNameText} used {PlayerMove.MoveName}.";
+                if (StoryTextBehavior.Clicked)
+                {
+                    StoryTextBehavior.Clicked = false;
+                    StoryTextBehavior.gameObject.SetActive(false);
+                    FightState = FightState.ChoseMove;
+                }
                 return;
             default:
                 Debug.LogError("Unable to determine what state I'm in rn...");
                 break;
+        }
+
+        if (CombatManager.EnemyFighter.CurrentHp <= 0)
+        {
+            SceneManager.LoadScene(CombatManager.SceneToLoadAfterCombat);
         }
     }
 }

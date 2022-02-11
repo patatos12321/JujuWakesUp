@@ -6,6 +6,6 @@ public interface IFighter
 {
     string FighterName { get; }
     int MaxHp { get; }
-    int CurrentHp { get; }
+    int CurrentHp { get; set; }
     List<IFightingMove> FightingMoves { get; }
 }

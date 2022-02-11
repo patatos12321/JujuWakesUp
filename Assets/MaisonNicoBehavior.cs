@@ -1,3 +1,4 @@
+using Assets;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,8 @@ using UnityEngine;
 public class MaisonNicoBehavior : MonoBehaviour
 {
     public StoryTextBehavior StoryTextBehavior;
+    public Player Player;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -14,6 +17,11 @@ public class MaisonNicoBehavior : MonoBehaviour
             StoryTextBehavior.TextToDisplay = "What is happening? Why is there an octupus in my room??";
         }
         else { StoryTextBehavior.gameObject.SetActive(false); }
+
+        if (CombatManager.playerPosition != new Vector3())
+        {
+            Player.transform.position = CombatManager.playerPosition;
+        }
     }
 
     // Update is called once per frame
@@ -24,6 +32,7 @@ public class MaisonNicoBehavior : MonoBehaviour
             StoryTextBehavior.Clicked = false;
             StoryTextBehavior.gameObject.SetActive(false);
             Flags.IsPaused = false;
+            Flags.WakeUpTextDelivered = true;
         }
     }
 }

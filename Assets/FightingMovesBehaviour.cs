@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,7 +12,10 @@ public class FightingMovesBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        for (int index = 0; index < MoveButtons.Length; index++)
+        {
+            MoveButtons[index].onClick.AddListener(() => TaskOnClick(index));
+        }
     }
 
     public void SetFightingMoves(IFightingMove[] fightingMoves)
@@ -28,5 +32,10 @@ public class FightingMovesBehaviour : MonoBehaviour
                 MoveTexts[index].text = FightingMoves[index].MoveName;
             }
         }
+    }
+
+    void TaskOnClick(int moveIndex)
+    {
+        CombatBehaviour.PlayerMove = FightingMoves.First(f => f.MoveName == MoveTexts[moveIndex].text);
     }
 }
