@@ -16,4 +16,7 @@ public class FighterJuju : IFighter
     public int CurrentHp { get; set; }
 
     public List<IFightingMove> FightingMoves => KnownMoves.ToList();
+
+    //Juju a pas de tune spéciale
+    public string BattleSongName => "";
 }

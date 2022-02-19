@@ -1,17 +1,20 @@
+using System.Linq;
 using Assets;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public enum FightState {
-    ChoseMove,
-    Attack
+    PlayerChoseMove,
+    PlayerAttack,
+    EnemyChoseMove,
+    EnemyAttack
 }
 
 public class CombatBehaviour : MonoBehaviour
 {
     public StoryTextBehavior StoryTextBehavior;
-    public FightState FightState = FightState.ChoseMove;
+    public FightState FightState = FightState.PlayerChoseMove;
 
     public Text EnemyNameText;
     public Text PlayerNameText;
@@ -25,6 +28,7 @@ public class CombatBehaviour : MonoBehaviour
     public FightingMovesBehaviour FightingMovesBehaviour;
 
     public IFightingMove PlayerMove;
+    public IFightingMove EnemyMove;
 
     void Start()
     {
@@ -47,17 +51,17 @@ public class CombatBehaviour : MonoBehaviour
     {
         switch (FightState)
         {
-            case FightState.ChoseMove:
+            case FightState.PlayerChoseMove:
                 StoryTextBehavior.gameObject.SetActive(false);
                 FightingMovesBehaviour.gameObject.SetActive(true);
                 if (PlayerMove != null)
                 {
-                    FightState = FightState.Attack;
+                    SetFightState(FightState.PlayerAttack);
                     CombatManager.EnemyFighter.CurrentHp = CombatManager.EnemyFighter.CurrentHp - PlayerMove.Damage;
                     EnemyHealthBar.CurrentHealth = CombatManager.EnemyFighter.CurrentHp;
                 }
                 break;
-            case FightState.Attack:
+            case FightState.PlayerAttack:
                 FightingMovesBehaviour.gameObject.SetActive(false);
                 StoryTextBehavior.gameObject.SetActive(true);
                 StoryTextBehavior.TextToDisplay = $"{PlayerNameText.text} used {PlayerMove.MoveName}.";
@@ -66,7 +70,28 @@ public class CombatBehaviour : MonoBehaviour
                     StoryTextBehavior.Clicked = false;
                     StoryTextBehavior.gameObject.SetActive(false);
                     PlayerMove = null;
-                    FightState = FightState.ChoseMove;
+                    SetFightState(FightState.EnemyChoseMove);
+                }
+                break;
+            case FightState.EnemyChoseMove:
+                FightingMovesBehaviour.gameObject.SetActive(false);
+                StoryTextBehavior.gameObject.SetActive(false);
+                //Todo : Select a move from the fighting moves list
+                EnemyMove = CombatManager.EnemyFighter.FightingMoves.First();
+                CombatManager.PlayerFighter.CurrentHp = CombatManager.PlayerFighter.CurrentHp - EnemyMove.Damage;
+                PlayerHealthBar.CurrentHealth = CombatManager.PlayerFighter.CurrentHp;
+                SetFightState(FightState.EnemyAttack);
+                break;
+            case FightState.EnemyAttack:
+                FightingMovesBehaviour.gameObject.SetActive(false);
+                StoryTextBehavior.gameObject.SetActive(true);
+                StoryTextBehavior.TextToDisplay = $"{EnemyNameText.text} used {EnemyMove.MoveName}. Ouch!";
+                if (StoryTextBehavior.Clicked)
+                {
+                    StoryTextBehavior.Clicked = false;
+                    StoryTextBehavior.gameObject.SetActive(false);
+                    EnemyMove = null;
+                    SetFightState(FightState.PlayerChoseMove);
                 }
                 break;
             default:
@@ -79,4 +104,10 @@ public class CombatBehaviour : MonoBehaviour
             SceneManager.LoadScene(CombatManager.SceneToLoadAfterCombat);
         }
     }
+
+    private void SetFightState(FightState newFightState)
+    {
+        FightState = newFightState;
+    }
+
 }
