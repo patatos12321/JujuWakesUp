@@ -9,6 +9,7 @@ namespace Assets.Fighters.FighterFactories
             return new FighterPieuvre()
             {
                 KnownMoves = new List<IFightingMove>() { new MoveSquirt() }.ToArray()
+                //Il faut ajouter une nouvelle propriété du fighter pour dire "MaMusic = "WhateverLeNomDeMaTuneDePieuvre""
             };
         }
     }
