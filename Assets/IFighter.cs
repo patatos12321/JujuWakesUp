@@ -8,4 +8,5 @@ public interface IFighter
     int MaxHp { get; }
     int CurrentHp { get; set; }
     List<IFightingMove> FightingMoves { get; }
+    string BattleSongName { get; }
 }

@@ -71,28 +71,28 @@ public class Player : MonoBehaviour
 
     private void GetAndroidMovements(ref float x, ref float y)
     {
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Stationary)
+        if (Input.touchCount > 0)
         {
             Vector2 touchPosition = Input.GetTouch(0).position;
             double halfScreenWidth = Screen.width / 2.0;
             double halfScreenHeigth = Screen.height / 2.0;
 
-            if (touchPosition.x < halfScreenWidth)
+            if (touchPosition.x < halfScreenWidth / 2 )
             {
-                x = -(Screen.width - touchPosition.x) / Screen.width * speed * Time.deltaTime;
+                x = -speed * Time.deltaTime;
             }
-            else if (touchPosition.x > halfScreenWidth)
+            else if (touchPosition.x > halfScreenWidth + halfScreenWidth / 2)
             {
-                x = touchPosition.x / Screen.width * speed * Time.deltaTime;
+                x = speed * Time.deltaTime;
             }
 
-            if (touchPosition.y < halfScreenHeigth)
+            if (touchPosition.y < halfScreenHeigth / 2)
             {
-                y = (Screen.height - touchPosition.y) / Screen.height * speed * Time.deltaTime;
+                y = -speed * Time.deltaTime;
             }
-            else if (touchPosition.y > halfScreenHeigth)
+            else if (touchPosition.y > halfScreenHeigth + halfScreenHeigth / 2)
             {
-                y = touchPosition.y / Screen.height * speed * Time.deltaTime;
+                y = speed * Time.deltaTime;
             }
         }
     }
