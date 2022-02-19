@@ -8,7 +8,8 @@ public enum FightState {
     PlayerChoseMove,
     PlayerAttack,
     EnemyChoseMove,
-    EnemyAttack
+    EnemyAttack,
+    PlayerWon
 }
 
 public class CombatBehaviour : MonoBehaviour
@@ -64,7 +65,7 @@ public class CombatBehaviour : MonoBehaviour
             case FightState.PlayerAttack:
                 FightingMovesBehaviour.gameObject.SetActive(false);
                 StoryTextBehavior.gameObject.SetActive(true);
-                StoryTextBehavior.TextToDisplay = $"{PlayerNameText.text} used {PlayerMove.MoveName}.";
+                StoryTextBehavior.SetDisplayText($"{ PlayerNameText.text} used {PlayerMove.MoveName}.");
                 if (StoryTextBehavior.Clicked)
                 {
                     StoryTextBehavior.Clicked = false;
@@ -85,13 +86,22 @@ public class CombatBehaviour : MonoBehaviour
             case FightState.EnemyAttack:
                 FightingMovesBehaviour.gameObject.SetActive(false);
                 StoryTextBehavior.gameObject.SetActive(true);
-                StoryTextBehavior.TextToDisplay = $"{EnemyNameText.text} used {EnemyMove.MoveName}. Ouch!";
+                StoryTextBehavior.SetDisplayText($"{EnemyNameText.text} used {EnemyMove.MoveName}. Ouch!");
                 if (StoryTextBehavior.Clicked)
                 {
                     StoryTextBehavior.Clicked = false;
                     StoryTextBehavior.gameObject.SetActive(false);
                     EnemyMove = null;
                     SetFightState(FightState.PlayerChoseMove);
+                }
+                break;
+            case FightState.PlayerWon:
+                FightingMovesBehaviour.gameObject.SetActive(false);
+                StoryTextBehavior.gameObject.SetActive(true);
+                StoryTextBehavior.SetDisplayText($"You defeated {EnemyNameText.text}!");
+                if (StoryTextBehavior.Clicked)
+                {
+                    SceneManager.LoadScene(CombatManager.SceneToLoadAfterCombat);
                 }
                 break;
             default:
@@ -101,7 +111,7 @@ public class CombatBehaviour : MonoBehaviour
 
         if (CombatManager.EnemyFighter.CurrentHp <= 0)
         {
-            SceneManager.LoadScene(CombatManager.SceneToLoadAfterCombat);
+            SetFightState(FightState.PlayerWon);
         }
     }
 

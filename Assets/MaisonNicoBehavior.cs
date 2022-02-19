@@ -8,6 +8,7 @@ public class MaisonNicoBehavior : MonoBehaviour
     public StoryTextBehavior StoryTextBehavior;
     public Player Player;
     public GameObject Pieuvre;
+    public GameObject Peanut;
 
     // Start is called before the first frame update
     void Start()
@@ -15,14 +16,15 @@ public class MaisonNicoBehavior : MonoBehaviour
         if (!Flags.WakeUpTextDelivered)
         {
             Flags.IsPaused = true;
-            StoryTextBehavior.TextToDisplay = "What is happening? Why is there an octupus in my room??";
+            StoryTextBehavior.SetDisplayText("What is happening? Why is there an octupus in my room??");
+            Destroy(Peanut);
         }
-        else { StoryTextBehavior.gameObject.SetActive(false); }
-
-        if (Flags.FirstEnemyDefeated)
+        else if (Flags.FirstEnemyDefeated)
         {
             Destroy(Pieuvre);
+            StoryTextBehavior.SetDisplayText(new string[] { "Oh my god! Peanut! are you Okay?", "Ouaf!", "Stay with me! I'm too scared.", "Ouaf Ouaf!", "*Peanut joins your team*" });
         }
+        else { StoryTextBehavior.gameObject.SetActive(false); }
 
         if (CombatManager.playerPosition != new Vector3())
         {
@@ -39,6 +41,11 @@ public class MaisonNicoBehavior : MonoBehaviour
             StoryTextBehavior.gameObject.SetActive(false);
             Flags.IsPaused = false;
             Flags.WakeUpTextDelivered = true;
+            
+            if (Flags.FirstEnemyDefeated)
+            {
+                Destroy(Peanut);
+            }
         }
     }
 }

@@ -4,7 +4,9 @@ using UnityEngine.UI;
 public class StoryTextBehavior : MonoBehaviour
 {
     public bool Clicked = false;
-    public string TextToDisplay;
+    public string[] TextsToDisplay;
+    public int CurrentTextIndex = 0;
+
     public Button Button;
     public Text Text;
 
@@ -17,11 +19,32 @@ public class StoryTextBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Text.text = TextToDisplay;
+        if (TextsToDisplay == null || TextsToDisplay.Length == 0)
+        {
+            return;
+        }
+        Text.text = TextsToDisplay[CurrentTextIndex];
     }
 
     void TaskOnClick()
     {
-        Clicked = true;
+        if (CurrentTextIndex == TextsToDisplay.Length - 1)
+        {
+            Clicked = true;
+        }
+        else
+        {
+            CurrentTextIndex++;
+        }
+    }
+
+    public void SetDisplayText(string text)
+    {
+        TextsToDisplay = new[] { text };
+    }
+
+    public void SetDisplayText(string[] texts)
+    {
+        TextsToDisplay = texts;
     }
 }
