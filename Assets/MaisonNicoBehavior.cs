@@ -1,6 +1,5 @@
 using Assets;
-using System.Collections;
-using System.Collections.Generic;
+using Assets.Scripts;
 using UnityEngine;
 
 public class MaisonNicoBehavior : MonoBehaviour
@@ -26,10 +25,10 @@ public class MaisonNicoBehavior : MonoBehaviour
         }
         else { StoryTextBehavior.gameObject.SetActive(false); }
 
-        if (CombatManager.playerPosition != new Vector3())
-        {
-            Player.transform.position = CombatManager.playerPosition;
-        }
+        //if (CombatManager.playerPosition != new Vector3())
+        //{
+        //    Player.transform.position = CombatManager.playerPosition;
+        //}
     }
 
     // Update is called once per frame

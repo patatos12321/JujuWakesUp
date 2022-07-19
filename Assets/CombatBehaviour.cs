@@ -1,10 +1,12 @@
-using System.Linq;
 using Assets;
+using Assets.Scripts.FightingMoves;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public enum FightState {
+public enum FightState
+{
     PlayerChoseMove,
     PlayerAttack,
     EnemyChoseMove,
@@ -36,8 +38,18 @@ public class CombatBehaviour : MonoBehaviour
         EnemyNameText.text = CombatManager.EnemyFighter.FighterName;
         PlayerNameText.text = CombatManager.PlayerFighter.FighterName;
 
-        PlayerRenderer.sprite = CombatManager.PlayerSprite;
-        EnemyRenderer.sprite = CombatManager.EnemySprite;
+        var playerTexture = (Texture2D)Resources.Load(CombatManager.PlayerFighter.SpriteName);
+        PlayerRenderer.sprite = Sprite.Create(playerTexture
+            , new Rect(new Vector2(0, 0)
+            , new Vector2(playerTexture.width, playerTexture.height))
+            , new Vector2(0.5f, 0.5f)
+            , 16);
+
+        var enemyTexture = (Texture2D)Resources.Load(CombatManager.EnemyFighter.SpriteName);
+        EnemyRenderer.sprite = Sprite.Create(enemyTexture
+            , new Rect(new Vector2(0, 0), new Vector2(enemyTexture.width, enemyTexture.height))
+            , new Vector2(0.5f, 0.5f)
+            , 16);
 
         PlayerHealthBar.MaxHealth = CombatManager.PlayerFighter.MaxHp;
         PlayerHealthBar.CurrentHealth = CombatManager.PlayerFighter.CurrentHp;

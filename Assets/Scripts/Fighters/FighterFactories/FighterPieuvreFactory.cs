@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Assets.Scripts.FightingMoves;
+using System.Collections.Generic;
 
-namespace Assets.Fighters.FighterFactories
+namespace Assets.Scripts.Fighters.FighterFactories
 {
     public class FighterPieuvreFactory : IFighterSpecificFactory
     {

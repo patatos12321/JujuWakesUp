@@ -1,6 +1,7 @@
 using Assets;
-using System;
-using System.Collections;
+using Assets.Scripts;
+using Assets.Scripts.Fighters;
+using Assets.Scripts.FightingMoves;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -97,25 +98,25 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.tag == "Enemy")
-        {
-            CombatManager.EnemySprite = collision.GetComponent<SpriteRenderer>().sprite;
-            CombatManager.EnemyFighter = collision.GetComponent<FighterFactory>().GetFighter();
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    if (collision.tag == "Enemy")
+    //    {
+    //        CombatManager.EnemySprite = collision.GetComponent<SpriteRenderer>().sprite;
+    //        CombatManager.EnemyFighter = collision.GetComponent<FighterFactory>().GetFighter();
 
 
-            CombatManager.PlayerSprite = walkingSprites[0];
-            CombatManager.PlayerFighter = new FighterJuju()
-            {
-                KnownMoves = new List<IFightingMove>() { new MoveOya() }.ToArray()
-            };
+    //        CombatManager.PlayerSprite = walkingSprites[0];
+    //        CombatManager.PlayerFighter = new FighterJuju()
+    //        {
+    //            KnownMoves = new List<IFightingMove>() { new MoveOya() }.ToArray()
+    //        };
 
-            CombatManager.SceneToLoadAfterCombat = SceneManager.GetActiveScene().name;
-            CombatManager.playerPosition = this.transform.position;
-            Flags.FirstEnemyDefeated = true;
+    //        CombatManager.SceneToLoadAfterCombat = SceneManager.GetActiveScene().name;
+    //        CombatManager.playerPosition = this.transform.position;
+    //        Flags.FirstEnemyDefeated = true;
 
-            SceneManager.LoadScene("Combat");
-        }
-    }
+    //        SceneManager.LoadScene("Combat");
+    //    }
+    //}
 }

@@ -1,12 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class NewGame : MonoBehaviour
+public class SceneLoader : MonoBehaviour
 {
     public Button yourButton;
+    public string SceneToLoad;
     
     void Start()
     {
@@ -16,6 +15,6 @@ public class NewGame : MonoBehaviour
 
     void TaskOnClick()
     {
-        SceneManager.LoadScene("MaisonNico");
+        SceneManager.LoadScene(SceneToLoad);
     }
 }
