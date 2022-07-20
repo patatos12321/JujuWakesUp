@@ -7,7 +7,7 @@ namespace Assets.Scripts.Fighters
     public enum FighterType
     {
         Pieuvre,
-        Deviljo
+        Deviljoe
     }
 
     public class FighterFactory : MonoBehaviour
@@ -21,7 +21,7 @@ namespace Assets.Scripts.Fighters
             {
                 case FighterType.Pieuvre:
                     return new FighterPieuvreFactory().GetFighter();
-                case FighterType.Deviljo:
+                case FighterType.Deviljoe:
                     throw new NotImplementedException();
                 default:
                     break;
@@ -35,8 +35,8 @@ namespace Assets.Scripts.Fighters
             {
                 case FighterType.Pieuvre:
                     return new FighterPieuvreFactory().GetFighter();
-                case FighterType.Deviljo:
-                    throw new NotImplementedException();
+                case FighterType.Deviljoe:
+                    return new FighterDeviljoeFactory().GetFighter();
                 default:
                     break;
             }

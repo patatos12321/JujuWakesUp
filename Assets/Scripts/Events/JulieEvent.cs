@@ -1,8 +1,8 @@
 ﻿namespace Assets.Scripts.Events
 {
-    public enum JulieEventType { Fight }
+    public enum JulieEventType { Fight, NewFighter }
 
-    class JulieEvent
+    public class JulieEvent
     {
         public string Name;
         public string Description;

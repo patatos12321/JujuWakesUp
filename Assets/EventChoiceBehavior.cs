@@ -1,4 +1,5 @@
 using Assets;
+using Assets.Scripts;
 using Assets.Scripts.Events;
 using Assets.Scripts.Fighters;
 using Assets.Scripts.FightingMoves;
@@ -38,22 +39,22 @@ public class EventChoiceBehavior : MonoBehaviour
 
     void LoadJulieEvent(JulieEvent julieEvent)
     {
+        Flags.CurrentStep++;
+        SharedResources.CurrentEvent = julieEvent;
+        SharedResources.SceneToLoadAfter = SceneManager.GetActiveScene().name;
+
         switch (julieEvent.JulieEventType)
         {
             case JulieEventType.Fight:
                 var julieFightEvent = julieEvent as JulieFightEvent;
 
                 var enemyFighter = FighterFactory.GetFighter(julieFightEvent.FighterType);
-                CombatManager.EnemyFighter = enemyFighter;
-
-                CombatManager.PlayerFighter = new FighterJuju()
-                {
-                    KnownMoves = new List<IFightingMove>() { new MoveOya() }.ToArray()
-                };
-
-                CombatManager.SceneToLoadAfterCombat = SceneManager.GetActiveScene().name;
+                SharedResources.EnemyFighter = enemyFighter;
 
                 SceneManager.LoadScene("Combat");
+                break;
+            case JulieEventType.NewFighter:
+                SceneManager.LoadScene("NewFighter");
                 break;
             default:
                 break;

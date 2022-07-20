@@ -9,12 +9,18 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: c01902c2a8a4c0340b0eb8f16dd055d7
   - enabled: 1
-    path: Assets/Scenes/Combat.unity
-    guid: fe10d2a36ab1b1a43aad6acee3284029
-  - enabled: 1
     path: Assets/Scenes/Chapter_01.unity
     guid: 2ef06657045d43143bd2ebd5e7dad448
   - enabled: 1
     path: Assets/Scenes/EventChoice.unity
     guid: 71b68f85a9ec0c44b8f3f180663fbba7
+  - enabled: 1
+    path: Assets/Scenes/Combat.unity
+    guid: fe10d2a36ab1b1a43aad6acee3284029
+  - enabled: 1
+    path: Assets/Scenes/NewFighter.unity
+    guid: aeef2da8daa5c7944b7d9ebffbdcfc17
+  - enabled: 1
+    path: Assets/Scenes/GameLost.unity
+    guid: 54726c7599accca4da5b696af42c323c
   m_configObjects: {}

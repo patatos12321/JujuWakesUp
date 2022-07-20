@@ -1,4 +1,6 @@
 using Assets;
+using Assets.Scripts.Extensions;
+using Assets.Scripts.Fighters;
 using Assets.Scripts.FightingMoves;
 using System.Linq;
 using UnityEngine;
@@ -11,7 +13,8 @@ public enum FightState
     PlayerAttack,
     EnemyChoseMove,
     EnemyAttack,
-    PlayerWon
+    PlayerWon,
+    PlayerLost
 }
 
 public class CombatBehaviour : MonoBehaviour
@@ -33,31 +36,28 @@ public class CombatBehaviour : MonoBehaviour
     public IFightingMove PlayerMove;
     public IFightingMove EnemyMove;
 
+    private IFighter CurrentPlayerFighter;
+
     void Start()
     {
-        EnemyNameText.text = CombatManager.EnemyFighter.FighterName;
-        PlayerNameText.text = CombatManager.PlayerFighter.FighterName;
+        CurrentPlayerFighter = SharedResources.PlayerFighters.First();
 
-        var playerTexture = (Texture2D)Resources.Load(CombatManager.PlayerFighter.SpriteName);
-        PlayerRenderer.sprite = Sprite.Create(playerTexture
-            , new Rect(new Vector2(0, 0)
-            , new Vector2(playerTexture.width, playerTexture.height))
-            , new Vector2(0.5f, 0.5f)
-            , 16);
+        EnemyNameText.text = SharedResources.EnemyFighter.FighterName;
+        PlayerNameText.text = CurrentPlayerFighter.FighterName;
 
-        var enemyTexture = (Texture2D)Resources.Load(CombatManager.EnemyFighter.SpriteName);
-        EnemyRenderer.sprite = Sprite.Create(enemyTexture
-            , new Rect(new Vector2(0, 0), new Vector2(enemyTexture.width, enemyTexture.height))
-            , new Vector2(0.5f, 0.5f)
-            , 16);
+        var playerTexture = (Texture2D)Resources.Load(CurrentPlayerFighter.SpriteName);
+        PlayerRenderer.sprite = playerTexture.GetFighterSprite();
 
-        PlayerHealthBar.MaxHealth = CombatManager.PlayerFighter.MaxHp;
-        PlayerHealthBar.CurrentHealth = CombatManager.PlayerFighter.CurrentHp;
+        var enemyTexture = (Texture2D)Resources.Load(SharedResources.EnemyFighter.SpriteName);
+        EnemyRenderer.sprite = enemyTexture.GetFighterSprite();
 
-        EnemyHealthBar.MaxHealth = CombatManager.EnemyFighter.MaxHp;
-        EnemyHealthBar.CurrentHealth = CombatManager.EnemyFighter.CurrentHp;
+        PlayerHealthBar.MaxHealth = CurrentPlayerFighter.MaxHp;
+        PlayerHealthBar.CurrentHealth = CurrentPlayerFighter.CurrentHp;
 
-        FightingMovesBehaviour.SetFightingMoves(CombatManager.PlayerFighter.FightingMoves.ToArray());
+        EnemyHealthBar.MaxHealth = SharedResources.EnemyFighter.MaxHp;
+        EnemyHealthBar.CurrentHealth = SharedResources.EnemyFighter.CurrentHp;
+
+        FightingMovesBehaviour.SetFightingMoves(CurrentPlayerFighter.FightingMoves.ToArray());
     }
 
     void Update()
@@ -70,8 +70,8 @@ public class CombatBehaviour : MonoBehaviour
                 if (PlayerMove != null)
                 {
                     SetFightState(FightState.PlayerAttack);
-                    CombatManager.EnemyFighter.CurrentHp = CombatManager.EnemyFighter.CurrentHp - PlayerMove.Damage;
-                    EnemyHealthBar.CurrentHealth = CombatManager.EnemyFighter.CurrentHp;
+                    SharedResources.EnemyFighter.CurrentHp = SharedResources.EnemyFighter.CurrentHp - PlayerMove.Damage;
+                    EnemyHealthBar.CurrentHealth = SharedResources.EnemyFighter.CurrentHp;
                 }
                 break;
             case FightState.PlayerAttack:
@@ -90,9 +90,9 @@ public class CombatBehaviour : MonoBehaviour
                 FightingMovesBehaviour.gameObject.SetActive(false);
                 StoryTextBehavior.gameObject.SetActive(false);
                 //Todo : Select a move from the fighting moves list
-                EnemyMove = CombatManager.EnemyFighter.FightingMoves.First();
-                CombatManager.PlayerFighter.CurrentHp = CombatManager.PlayerFighter.CurrentHp - EnemyMove.Damage;
-                PlayerHealthBar.CurrentHealth = CombatManager.PlayerFighter.CurrentHp;
+                EnemyMove = SharedResources.EnemyFighter.FightingMoves.First();
+                CurrentPlayerFighter.CurrentHp = CurrentPlayerFighter.CurrentHp - EnemyMove.Damage;
+                PlayerHealthBar.CurrentHealth = CurrentPlayerFighter.CurrentHp;
                 SetFightState(FightState.EnemyAttack);
                 break;
             case FightState.EnemyAttack:
@@ -113,7 +113,16 @@ public class CombatBehaviour : MonoBehaviour
                 StoryTextBehavior.SetDisplayText($"You defeated {EnemyNameText.text}!");
                 if (StoryTextBehavior.Clicked)
                 {
-                    SceneManager.LoadScene(CombatManager.SceneToLoadAfterCombat);
+                    SceneManager.LoadScene(SharedResources.SceneToLoadAfter);
+                }
+                break;
+            case FightState.PlayerLost:
+                FightingMovesBehaviour.gameObject.SetActive(false);
+                StoryTextBehavior.gameObject.SetActive(true);
+                StoryTextBehavior.SetDisplayText($"You lost against {EnemyNameText.text}!");
+                if (StoryTextBehavior.Clicked)
+                {
+                    SceneManager.LoadScene("GameLost");
                 }
                 break;
             default:
@@ -121,9 +130,13 @@ public class CombatBehaviour : MonoBehaviour
                 break;
         }
 
-        if (CombatManager.EnemyFighter.CurrentHp <= 0)
+        if (SharedResources.EnemyFighter.CurrentHp <= 0)
         {
             SetFightState(FightState.PlayerWon);
+        }
+        else if(SharedResources.PlayerFighters.First().CurrentHp <= 0)
+        {
+            SetFightState(FightState.PlayerLost);
         }
     }
 
