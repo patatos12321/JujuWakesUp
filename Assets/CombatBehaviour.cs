@@ -74,6 +74,7 @@ public class CombatBehaviour : MonoBehaviour
                     EnemyHealthBar.CurrentHealth = SharedResources.EnemyFighter.CurrentHp;
                 }
                 break;
+
             case FightState.PlayerAttack:
                 FightingMovesBehaviour.gameObject.SetActive(false);
                 StoryTextBehavior.gameObject.SetActive(true);
@@ -83,9 +84,17 @@ public class CombatBehaviour : MonoBehaviour
                     StoryTextBehavior.Clicked = false;
                     StoryTextBehavior.gameObject.SetActive(false);
                     PlayerMove = null;
-                    SetFightState(FightState.EnemyChoseMove);
+                    if (SharedResources.EnemyFighter.CurrentHp <= 0)
+                    {
+                        SetFightState(FightState.PlayerWon);
+                    }
+                    else
+                    {
+                        SetFightState(FightState.EnemyChoseMove);
+                    }
                 }
                 break;
+
             case FightState.EnemyChoseMove:
                 FightingMovesBehaviour.gameObject.SetActive(false);
                 StoryTextBehavior.gameObject.SetActive(false);
@@ -95,18 +104,28 @@ public class CombatBehaviour : MonoBehaviour
                 PlayerHealthBar.CurrentHealth = CurrentPlayerFighter.CurrentHp;
                 SetFightState(FightState.EnemyAttack);
                 break;
+
             case FightState.EnemyAttack:
                 FightingMovesBehaviour.gameObject.SetActive(false);
                 StoryTextBehavior.gameObject.SetActive(true);
+
                 StoryTextBehavior.SetDisplayText($"{EnemyNameText.text} used {EnemyMove.MoveName}. Ouch!");
                 if (StoryTextBehavior.Clicked)
                 {
                     StoryTextBehavior.Clicked = false;
                     StoryTextBehavior.gameObject.SetActive(false);
                     EnemyMove = null;
-                    SetFightState(FightState.PlayerChoseMove);
+                    if (SharedResources.PlayerFighters.First().CurrentHp <= 0)
+                    {
+                        SetFightState(FightState.PlayerLost);
+                    }
+                    else
+                    {
+                        SetFightState(FightState.PlayerChoseMove);
+                    }
                 }
                 break;
+
             case FightState.PlayerWon:
                 FightingMovesBehaviour.gameObject.SetActive(false);
                 StoryTextBehavior.gameObject.SetActive(true);
@@ -116,6 +135,7 @@ public class CombatBehaviour : MonoBehaviour
                     SceneManager.LoadScene(SharedResources.SceneToLoadAfter);
                 }
                 break;
+
             case FightState.PlayerLost:
                 FightingMovesBehaviour.gameObject.SetActive(false);
                 StoryTextBehavior.gameObject.SetActive(true);
@@ -125,18 +145,10 @@ public class CombatBehaviour : MonoBehaviour
                     SceneManager.LoadScene("GameLost");
                 }
                 break;
+
             default:
                 Debug.LogError("Unable to determine what state I'm in rn...");
                 break;
-        }
-
-        if (SharedResources.EnemyFighter.CurrentHp <= 0)
-        {
-            SetFightState(FightState.PlayerWon);
-        }
-        else if(SharedResources.PlayerFighters.First().CurrentHp <= 0)
-        {
-            SetFightState(FightState.PlayerLost);
         }
     }
 
