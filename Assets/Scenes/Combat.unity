@@ -251,6 +251,7 @@ MonoBehaviour:
   PlayerHealthBar: {fileID: 392503173}
   EnemyHealthBar: {fileID: 501410625}
   FightingMovesBehaviour: {fileID: 437145201}
+  AudioSource: {fileID: 870709922}
 --- !u!4 &397306793
 Transform:
   m_ObjectHideFlags: 0
