@@ -36,6 +36,8 @@ public class CombatBehaviour : MonoBehaviour
     public IFightingMove PlayerMove;
     public IFightingMove EnemyMove;
 
+    public AudioSource AudioSource;
+
     private IFighter CurrentPlayerFighter;
 
     void Start()
@@ -50,6 +52,9 @@ public class CombatBehaviour : MonoBehaviour
 
         var enemyTexture = (Texture2D)Resources.Load(SharedResources.EnemyFighter.SpriteName);
         EnemyRenderer.sprite = enemyTexture.GetFighterSprite();
+
+        AudioSource.clip = (AudioClip)Resources.Load(SharedResources.EnemyFighter.BattleSongName);
+        AudioSource.Play();
 
         PlayerHealthBar.MaxHealth = CurrentPlayerFighter.MaxHp;
         PlayerHealthBar.CurrentHealth = CurrentPlayerFighter.CurrentHp;
