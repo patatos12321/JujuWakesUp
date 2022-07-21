@@ -9,7 +9,7 @@ namespace Assets
     {
         public static string SceneToLoadAfter;
 
-        public static List<IFighter> PlayerFighters;
+        public static List<IFighter> PlayerFighters = new List<IFighter>();
         public static IFighter EnemyFighter;
 
         public static JulieEvent CurrentEvent;
