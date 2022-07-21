@@ -83,7 +83,7 @@ public class CombatBehaviour : MonoBehaviour
             case FightState.PlayerAttack:
                 FightingMovesBehaviour.gameObject.SetActive(false);
                 StoryTextBehavior.gameObject.SetActive(true);
-                StoryTextBehavior.SetDisplayText($"{ PlayerNameText.text} used {PlayerMove.MoveName}.");
+                StoryTextBehavior.SetDisplayText($"{ PlayerNameText.text} used {PlayerMove.MoveName}.", new Color(0.002f, 0.002f, 0.424f, 1));
                 if (StoryTextBehavior.Clicked)
                 {
                     StoryTextBehavior.Clicked = false;
@@ -114,7 +114,7 @@ public class CombatBehaviour : MonoBehaviour
                 FightingMovesBehaviour.gameObject.SetActive(false);
                 StoryTextBehavior.gameObject.SetActive(true);
 
-                StoryTextBehavior.SetDisplayText($"{EnemyNameText.text} used {EnemyMove.MoveName}.");
+                StoryTextBehavior.SetDisplayText($"{EnemyNameText.text} used {EnemyMove.MoveName}.", new Color(0.424f, 0.002f, 0.002f, 1));
                 if (StoryTextBehavior.Clicked)
                 {
                     StoryTextBehavior.Clicked = false;
@@ -134,7 +134,7 @@ public class CombatBehaviour : MonoBehaviour
             case FightState.PlayerWon:
                 FightingMovesBehaviour.gameObject.SetActive(false);
                 StoryTextBehavior.gameObject.SetActive(true);
-                StoryTextBehavior.SetDisplayText($"You defeated {EnemyNameText.text}!");
+                StoryTextBehavior.SetDisplayText($"You defeated {EnemyNameText.text}!", new Color(0.002f, 0.424f, 0.002f, 1));
                 if (StoryTextBehavior.Clicked)
                 {
                     SceneManager.LoadScene(SharedResources.SceneToLoadAfter);
@@ -144,7 +144,7 @@ public class CombatBehaviour : MonoBehaviour
             case FightState.PlayerLost:
                 FightingMovesBehaviour.gameObject.SetActive(false);
                 StoryTextBehavior.gameObject.SetActive(true);
-                StoryTextBehavior.SetDisplayText($"You lost against {EnemyNameText.text}!");
+                StoryTextBehavior.SetDisplayText($"You lost against {EnemyNameText.text}!", new Color(0.424f, 0.002f, 0.002f, 1));
                 if (StoryTextBehavior.Clicked)
                 {
                     SceneManager.LoadScene("GameLost");
