@@ -7,7 +7,8 @@ namespace Assets.Scripts.Fighters
     public enum FighterType
     {
         Pieuvre,
-        Deviljoe
+        Deviljoe,
+        SpaghettiMonster
     }
 
     public class FighterFactory : MonoBehaviour
@@ -15,6 +16,25 @@ namespace Assets.Scripts.Fighters
         public FighterType fighterType;
         public int fighterLevel;
 
+
+        public static IFighter GetFighter(FighterType fighterType)
+        {
+            switch (fighterType)
+            {
+                case FighterType.Pieuvre:
+                    return new FighterPieuvreFactory().GetFighter();
+                case FighterType.Deviljoe:
+                    return new FighterDeviljoeFactory().GetFighter();
+                case FighterType.SpaghettiMonster:
+                    return new FighterSpaghettiMonsterFactory().GetFighter();
+                default:
+                    break;
+            }
+            throw new Exception("This should not happen! Unable to get a fighter.");
+        }
+
+        #region oldCode
+        [Obsolete]
         public IFighter GetFighter()
         {
             switch (fighterType)
@@ -28,19 +48,6 @@ namespace Assets.Scripts.Fighters
             }
             throw new Exception("This should not happen! Unable to get a fighter.");
         }
-
-        public static IFighter GetFighter(FighterType fighterType)
-        {
-            switch (fighterType)
-            {
-                case FighterType.Pieuvre:
-                    return new FighterPieuvreFactory().GetFighter();
-                case FighterType.Deviljoe:
-                    return new FighterDeviljoeFactory().GetFighter();
-                default:
-                    break;
-            }
-            throw new Exception("This should not happen! Unable to get a fighter.");
-        }
+        #endregion
     }
 }

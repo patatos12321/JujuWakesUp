@@ -16,8 +16,7 @@ namespace Assets.Scripts.Events
                     {
                         Name = "Octupus fight",
                         Description = "Fight the octopus",
-                        FighterType = FighterType.Pieuvre,
-                        JulieEventType = JulieEventType.Fight
+                        FighterType = FighterType.Pieuvre
                     };
                 }
                 else if (Flags.CurrentStep == 2)
@@ -26,7 +25,6 @@ namespace Assets.Scripts.Events
                     {
                         Name = "Peanut",
                         Description = "Recruit Peanut in your team",
-                        JulieEventType = JulieEventType.NewFighter,
                         NewFighter = new FighterPeanut()
                         {
                             KnownMoves = new IFightingMove[] { new MoveBite() }
@@ -40,14 +38,18 @@ namespace Assets.Scripts.Events
                         Name = "Deviljoe fight",
                         Description = "Attempt to overcome the madness",
                         FighterType = FighterType.Deviljoe,
-                        JulieEventType = JulieEventType.Fight
                     };
                     yield return new JulieFightEvent()
                     {
                         Name = "Octupus fight",
                         Description = "Fight the octopus",
                         FighterType = FighterType.Pieuvre,
-                        JulieEventType = JulieEventType.Fight
+                    };
+                    yield return new JulieFightEvent()
+                    {
+                        Name = "Spaghetti Monster",
+                        Description = "Eat the delicious treat",
+                        FighterType = FighterType.SpaghettiMonster
                     };
                 }
             }
