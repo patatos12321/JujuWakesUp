@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Assets.Scripts.Extensions
 {
@@ -10,7 +11,7 @@ namespace Assets.Scripts.Extensions
             , new Rect(new Vector2(0, 0)
             , new Vector2(fighterTexture.width, fighterTexture.height))
             , new Vector2(0.5f, 0.5f)
-            , 16);
+            , Math.Max(16, fighterTexture.width));
         }
     }
 }
