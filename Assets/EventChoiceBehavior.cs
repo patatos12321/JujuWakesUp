@@ -2,8 +2,6 @@ using Assets;
 using Assets.Scripts;
 using Assets.Scripts.Events;
 using Assets.Scripts.Fighters;
-using Assets.Scripts.FightingMoves;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;

@@ -114,7 +114,7 @@ public class CombatBehaviour : MonoBehaviour
                 FightingMovesBehaviour.gameObject.SetActive(false);
                 StoryTextBehavior.gameObject.SetActive(true);
 
-                StoryTextBehavior.SetDisplayText($"{EnemyNameText.text} used {EnemyMove.MoveName}. Ouch!");
+                StoryTextBehavior.SetDisplayText($"{EnemyNameText.text} used {EnemyMove.MoveName}.");
                 if (StoryTextBehavior.Clicked)
                 {
                     StoryTextBehavior.Clicked = false;

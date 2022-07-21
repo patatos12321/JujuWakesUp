@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace Assets.Scripts.Fighters.FighterFactories
 {
-    public class FighterPieuvreFactory : IFighterSpecificFactory
+    public class FighterSpaghettiMonsterFactory : IFighterSpecificFactory
     {
         public IFighter GetFighter()
         {
-            return new FighterPieuvre()
+            return new FighterSpaghettiMonster()
             {
-                KnownMoves = new List<IFightingMove>() { new MoveSquirt() }.ToArray()
+                KnownMoves = new List<IFightingMove>() { new MoveSpaghettiSlap() }.ToArray()
             };
         }
     }
