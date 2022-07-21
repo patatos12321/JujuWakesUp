@@ -47,4 +47,10 @@ public class StoryTextBehavior : MonoBehaviour
     {
         TextsToDisplay = texts;
     }
+
+    public void SetDisplayText(string text, Color backgroundColor)
+    {
+        TextsToDisplay = new[] { text };
+        this.Button.GetComponent<Image>().color = backgroundColor;
+    }
 }
