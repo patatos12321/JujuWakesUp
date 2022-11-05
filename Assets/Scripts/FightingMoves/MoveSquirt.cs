@@ -5,6 +5,6 @@ namespace Assets.Scripts.FightingMoves
         public string MoveName => "Squirt";
 
         public int Damage => 6;
-        public int Duration => 8;
+        public int Duration => 7;
     }
 }

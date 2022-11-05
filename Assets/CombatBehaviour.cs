@@ -2,6 +2,7 @@ using Assets;
 using Assets.Scripts.Extensions;
 using Assets.Scripts.Fighters;
 using Assets.Scripts.FightingMoves;
+using System;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -11,6 +12,7 @@ public enum FightState
 {
     PlayerChoseMove,
     PlayerAttack,
+    PlayerChoseFighter,
     EnemyChoseMove,
     EnemyAttack,
     PlayerWon,
@@ -37,6 +39,7 @@ public class CombatBehaviour : MonoBehaviour
     public HealthBarBehaviour EnemyHealthBar;
 
     public FightingMovesBehaviour FightingMovesBehaviour;
+    public TeamViewerBehavior TeamViewerBehavior;
 
     public IFightingMove PlayerMove;
     public int PlayerMoveEndTurn;
@@ -49,13 +52,8 @@ public class CombatBehaviour : MonoBehaviour
 
     void Start()
     {
-        CurrentPlayerFighter = SharedResources.PlayerFighters.First();
-
-        EnemyNameText.text = SharedResources.EnemyFighter.FighterName;
-        PlayerNameText.text = CurrentPlayerFighter.FighterName;
-
-        var playerTexture = (Texture2D)Resources.Load(CurrentPlayerFighter.SpriteName);
-        PlayerRenderer.sprite = playerTexture.GetFighterSprite();
+        CurrentPlayerFighter = SharedResources.PlayerFighters.Where(p => p.IsAlive()).First();
+        ResetPlayerInfo();
 
         var enemyTexture = (Texture2D)Resources.Load(SharedResources.EnemyFighter.SpriteName);
         EnemyRenderer.sprite = enemyTexture.GetFighterSprite();
@@ -63,13 +61,11 @@ public class CombatBehaviour : MonoBehaviour
         AudioSource.clip = (AudioClip)Resources.Load(SharedResources.EnemyFighter.BattleSongName);
         AudioSource.Play();
 
-        PlayerHealthBar.MaxHealth = CurrentPlayerFighter.MaxHp;
-        PlayerHealthBar.CurrentHealth = CurrentPlayerFighter.CurrentHp;
-
+        EnemyNameText.text = SharedResources.EnemyFighter.FighterName;
         EnemyHealthBar.MaxHealth = SharedResources.EnemyFighter.MaxHp;
         EnemyHealthBar.CurrentHealth = SharedResources.EnemyFighter.CurrentHp;
 
-        FightingMovesBehaviour.SetFightingMoves(CurrentPlayerFighter.FightingMoves.ToArray());
+        TeamViewerBehavior.gameObject.SetActive(false);
     }
 
     void Update()
@@ -97,8 +93,7 @@ public class CombatBehaviour : MonoBehaviour
                 {
                     CombatPaused = true;
                     SetFightState(FightState.PlayerAttack);
-                    SharedResources.EnemyFighter.CurrentHp = SharedResources.EnemyFighter.CurrentHp - PlayerMove.Damage;
-                    EnemyHealthBar.CurrentHealth = SharedResources.EnemyFighter.CurrentHp;
+                    EnemyHealthBar.CurrentHealth = SharedResources.EnemyFighter.CurrentHp = Math.Max(0, SharedResources.EnemyFighter.CurrentHp - PlayerMove.Damage);
                     PlayerMoveEndTurn = CurrentTurn + PlayerMove.Duration;
                 }
                 break;
@@ -111,7 +106,38 @@ public class CombatBehaviour : MonoBehaviour
                 {
                     StoryTextBehavior.Clicked = false;
                     StoryTextBehavior.gameObject.SetActive(false);
+                    if (EnemyIsDead() || SharedResources.PlayerFighters.Where(pf => pf.IsAlive()).Count() == 1)
+                    {
+                        SetNextFighterChoseMoveState();
+                        CombatPaused = false;
+                    }
+                    else
+                    {
+                        SetFightState(FightState.PlayerChoseFighter);
+                    }
                     PlayerMove = null;
+                }
+                break;
+
+            case FightState.PlayerChoseFighter:
+                CombatPaused = true;
+
+                TeamViewerBehavior.ResetFighters();
+                TeamViewerBehavior.gameObject.SetActive(true);
+
+                StoryTextBehavior.gameObject.SetActive(true);
+                StoryTextBehavior.SetDisplayText($"*Chose your next fighter!*", new Color(0.002f, 0.002f, 0.424f, 1));
+
+                if (TeamViewerBehavior.SelectedFighter != null)
+                {
+                    StoryTextBehavior.Clicked = false;
+                    StoryTextBehavior.gameObject.SetActive(false);
+                    CurrentPlayerFighter = TeamViewerBehavior.SelectedFighter;
+                    
+                    TeamViewerBehavior.gameObject.SetActive(false);
+                    TeamViewerBehavior.UnselectFighter();
+
+                    ResetPlayerInfo();
                     SetNextFighterChoseMoveState();
                     CombatPaused = false;
                 }
@@ -125,8 +151,7 @@ public class CombatBehaviour : MonoBehaviour
                 StoryTextBehavior.gameObject.SetActive(false);
                 //Todo : Select a move from the fighting moves list
                 EnemyMove = SharedResources.EnemyFighter.FightingMoves.First();
-                CurrentPlayerFighter.CurrentHp = CurrentPlayerFighter.CurrentHp - EnemyMove.Damage;
-                PlayerHealthBar.CurrentHealth = CurrentPlayerFighter.CurrentHp;
+                PlayerHealthBar.CurrentHealth = CurrentPlayerFighter.CurrentHp = Math.Max(0, CurrentPlayerFighter.CurrentHp - EnemyMove.Damage);
                 SetFightState(FightState.EnemyAttack);
                 EnemyMoveEndTurn = CurrentTurn + EnemyMove.Duration;
                 CombatPaused = true;
@@ -178,15 +203,22 @@ public class CombatBehaviour : MonoBehaviour
 
     private void SetNextFighterChoseMoveState()
     {
-        if (SharedResources.PlayerFighters.First().CurrentHp <= 0)
+        if (CurrentPlayerFighter.CurrentHp <= 0)
         {
-            SetFightState(FightState.PlayerLost);
+            if (SharedResources.PlayerFighters.Any(p => p.IsAlive()))
+            {
+                SetFightState(FightState.PlayerChoseFighter);
+            }
+            else
+            {
+                SetFightState(FightState.PlayerLost);
+            }
         }
-        else if (SharedResources.EnemyFighter.CurrentHp <= 0)
+        else if (EnemyIsDead())
         {
             SetFightState(FightState.PlayerWon);
         }
-        else if (PlayerMoveEndTurn < EnemyMoveEndTurn)
+        else if (PlayerMoveEndTurn <= EnemyMoveEndTurn)
         {
             SetFightState(FightState.PlayerChoseMove);
         }
@@ -196,9 +228,25 @@ public class CombatBehaviour : MonoBehaviour
         }
     }
 
+    private static bool EnemyIsDead()
+    {
+        return SharedResources.EnemyFighter.CurrentHp <= 0;
+    }
+
     private void SetFightState(FightState newFightState)
     {
         FightState = newFightState;
+    }
+
+    private void ResetPlayerInfo()
+    {
+        PlayerNameText.text = CurrentPlayerFighter.FighterName;
+        PlayerHealthBar.MaxHealth = CurrentPlayerFighter.MaxHp;
+        PlayerHealthBar.CurrentHealth = CurrentPlayerFighter.CurrentHp;
+        FightingMovesBehaviour.SetFightingMoves(CurrentPlayerFighter.FightingMoves.ToArray());
+
+        var playerTexture = (Texture2D)Resources.Load(CurrentPlayerFighter.SpriteName);
+        PlayerRenderer.sprite = playerTexture.GetFighterSprite();
     }
 
 }

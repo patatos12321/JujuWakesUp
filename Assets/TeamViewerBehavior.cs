@@ -1,22 +1,46 @@
 using Assets;
-using Assets.Scripts.Extensions;
+using Assets.Scripts.Fighters;
+using System.Linq;
 using UnityEngine;
 
 public class TeamViewerBehavior : MonoBehaviour
 {
-    public SpriteRenderer[] spriteRenderers;
+    public FighterViewerBehavior[] FighterViewers;
+    public IFighter SelectedFighter;
+    public bool FilterAliveFighters = false;
     void Start()
     {
-        for (int i = 0; i < spriteRenderers.Length; i++)
+        ResetFighters();
+    }
+
+    private IFighter[] GetFilteredFighters()
+    {
+        return SharedResources.PlayerFighters.Where(p => p.IsAlive() || !FilterAliveFighters).ToArray();
+    }
+
+    public void SelectFighter(IFighter fighter)
+    {
+        SelectedFighter = fighter;
+    }
+
+    public void UnselectFighter()
+    {
+        SelectedFighter = null;
+    }
+
+    public void ResetFighters()
+    {
+        var filteredFighters = GetFilteredFighters();
+
+        for (int i = 0; i < FighterViewers.Length; i++)
         {
-            if (i >= SharedResources.PlayerFighters.Count)
+            if (i >= filteredFighters.Length)
             {
-                spriteRenderers[i].enabled = false;
+                FighterViewers[i].Disable();
             }
             else
             {
-
-                spriteRenderers[i].sprite = (Resources.Load(SharedResources.PlayerFighters[i].SpriteName) as Texture2D).GetFighterSprite();
+                FighterViewers[i].SetFighter(filteredFighters[i]);
             }
         }
     }
