@@ -19,6 +19,11 @@ public enum FightState
 
 public class CombatBehaviour : MonoBehaviour
 {
+    public int CurrentTurn = 0;
+    public int NbFramePerTurn = 120;
+    public int CurrentNbFrameForTurn = 0;
+    private bool CombatPaused = false;
+
     public StoryTextBehavior StoryTextBehavior;
     public FightState FightState = FightState.PlayerChoseMove;
 
@@ -34,7 +39,9 @@ public class CombatBehaviour : MonoBehaviour
     public FightingMovesBehaviour FightingMovesBehaviour;
 
     public IFightingMove PlayerMove;
+    public int PlayerMoveEndTurn;
     public IFightingMove EnemyMove;
+    public int EnemyMoveEndTurn;
 
     public AudioSource AudioSource;
 
@@ -67,16 +74,32 @@ public class CombatBehaviour : MonoBehaviour
 
     void Update()
     {
+        if (CurrentTurn < PlayerMoveEndTurn && CurrentTurn < EnemyMoveEndTurn && !CombatPaused)
+        {
+            CurrentNbFrameForTurn++;
+            if (CurrentNbFrameForTurn > NbFramePerTurn)
+            {
+                CurrentTurn++;
+                CurrentNbFrameForTurn = 0;
+            }
+        }
+
+
         switch (FightState)
         {
             case FightState.PlayerChoseMove:
+                if (PlayerMoveEndTurn > CurrentTurn)
+                    return;
+
                 StoryTextBehavior.gameObject.SetActive(false);
                 FightingMovesBehaviour.gameObject.SetActive(true);
                 if (PlayerMove != null)
                 {
+                    CombatPaused = true;
                     SetFightState(FightState.PlayerAttack);
                     SharedResources.EnemyFighter.CurrentHp = SharedResources.EnemyFighter.CurrentHp - PlayerMove.Damage;
                     EnemyHealthBar.CurrentHealth = SharedResources.EnemyFighter.CurrentHp;
+                    PlayerMoveEndTurn = CurrentTurn + PlayerMove.Duration;
                 }
                 break;
 
@@ -89,18 +112,15 @@ public class CombatBehaviour : MonoBehaviour
                     StoryTextBehavior.Clicked = false;
                     StoryTextBehavior.gameObject.SetActive(false);
                     PlayerMove = null;
-                    if (SharedResources.EnemyFighter.CurrentHp <= 0)
-                    {
-                        SetFightState(FightState.PlayerWon);
-                    }
-                    else
-                    {
-                        SetFightState(FightState.EnemyChoseMove);
-                    }
+                    SetNextFighterChoseMoveState();
+                    CombatPaused = false;
                 }
                 break;
 
             case FightState.EnemyChoseMove:
+                if (EnemyMoveEndTurn > CurrentTurn)
+                    return;
+
                 FightingMovesBehaviour.gameObject.SetActive(false);
                 StoryTextBehavior.gameObject.SetActive(false);
                 //Todo : Select a move from the fighting moves list
@@ -108,6 +128,8 @@ public class CombatBehaviour : MonoBehaviour
                 CurrentPlayerFighter.CurrentHp = CurrentPlayerFighter.CurrentHp - EnemyMove.Damage;
                 PlayerHealthBar.CurrentHealth = CurrentPlayerFighter.CurrentHp;
                 SetFightState(FightState.EnemyAttack);
+                EnemyMoveEndTurn = CurrentTurn + EnemyMove.Duration;
+                CombatPaused = true;
                 break;
 
             case FightState.EnemyAttack:
@@ -120,18 +142,14 @@ public class CombatBehaviour : MonoBehaviour
                     StoryTextBehavior.Clicked = false;
                     StoryTextBehavior.gameObject.SetActive(false);
                     EnemyMove = null;
-                    if (SharedResources.PlayerFighters.First().CurrentHp <= 0)
-                    {
-                        SetFightState(FightState.PlayerLost);
-                    }
-                    else
-                    {
-                        SetFightState(FightState.PlayerChoseMove);
-                    }
+
+                    SetNextFighterChoseMoveState();
+                    CombatPaused = false;
                 }
                 break;
 
             case FightState.PlayerWon:
+                CombatPaused = true;
                 FightingMovesBehaviour.gameObject.SetActive(false);
                 StoryTextBehavior.gameObject.SetActive(true);
                 StoryTextBehavior.SetDisplayText($"You defeated {EnemyNameText.text}!", new Color(0.002f, 0.424f, 0.002f, 1));
@@ -142,6 +160,7 @@ public class CombatBehaviour : MonoBehaviour
                 break;
 
             case FightState.PlayerLost:
+                CombatPaused = true;
                 FightingMovesBehaviour.gameObject.SetActive(false);
                 StoryTextBehavior.gameObject.SetActive(true);
                 StoryTextBehavior.SetDisplayText($"You lost against {EnemyNameText.text}!", new Color(0.424f, 0.002f, 0.002f, 1));
@@ -154,6 +173,26 @@ public class CombatBehaviour : MonoBehaviour
             default:
                 Debug.LogError("Unable to determine what state I'm in rn...");
                 break;
+        }
+    }
+
+    private void SetNextFighterChoseMoveState()
+    {
+        if (SharedResources.PlayerFighters.First().CurrentHp <= 0)
+        {
+            SetFightState(FightState.PlayerLost);
+        }
+        else if (SharedResources.EnemyFighter.CurrentHp <= 0)
+        {
+            SetFightState(FightState.PlayerWon);
+        }
+        else if (PlayerMoveEndTurn < EnemyMoveEndTurn)
+        {
+            SetFightState(FightState.PlayerChoseMove);
+        }
+        else
+        {
+            SetFightState(FightState.EnemyChoseMove);
         }
     }
 
