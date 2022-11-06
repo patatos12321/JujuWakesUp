@@ -1,3 +1,4 @@
+using Assets.Scripts.FightingGear;
 using Assets.Scripts.FightingMoves;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,5 +19,6 @@ namespace Assets.Scripts.Fighters
         public string BattleSongName => "Pieuvre Fight";
 
         public string SpriteName => "pieuvre_de_chambre";
+        public List<IFightingGear> FightingGear => new List<IFightingGear>();
     }
 }

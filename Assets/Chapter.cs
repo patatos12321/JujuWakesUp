@@ -19,5 +19,11 @@ public class Chapter : MonoBehaviour
                 KnownMoves = new IFightingMove[] { new MoveOya() }
             }
         };
+
+        SharedResources.Inventory = new Assets.Scripts.Player.Inventory()
+        {
+            FightingGears = new List<Assets.Scripts.FightingGear.IFightingGear>(),
+            NbAlienJuice = 0
+        };
     }
 }

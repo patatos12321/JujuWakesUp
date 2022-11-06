@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Events;
 using Assets.Scripts.Fighters;
+using Assets.Scripts.Player;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,5 +14,6 @@ namespace Assets
         public static IFighter EnemyFighter;
 
         public static JulieEvent CurrentEvent;
+        public static Inventory Inventory;
     }
 }

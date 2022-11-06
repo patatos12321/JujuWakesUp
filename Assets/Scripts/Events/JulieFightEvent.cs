@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Fighters;
+using Assets.Scripts.FightingGear;
 
 namespace Assets.Scripts.Events
 {
@@ -9,5 +10,7 @@ namespace Assets.Scripts.Events
             JulieEventType = JulieEventType.Fight;
         }
         public FighterType FighterType;
+        public IFightingGear GearReward;
+        public int AlienJuiceReward;
     }
 }

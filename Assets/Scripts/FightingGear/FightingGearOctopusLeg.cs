@@ -10,5 +10,7 @@ namespace Assets.Scripts.FightingGear
         }
 
         public IFightingMove FightingMove => new MoveSquirt();
+
+        public string SpriteName => "octopath_leg";
     }
 }

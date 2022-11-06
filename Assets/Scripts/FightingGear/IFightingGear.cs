@@ -5,5 +5,6 @@ namespace Assets.Scripts.FightingGear
     public interface IFightingGear
     {
         IFightingMove FightingMove { get; }
+        string SpriteName { get; }
     }
 }

@@ -1,4 +1,5 @@
 using Assets;
+using Assets.Scripts.Events;
 using Assets.Scripts.Extensions;
 using Assets.Scripts.Fighters;
 using Assets.Scripts.FightingMoves;
@@ -180,7 +181,15 @@ public class CombatBehaviour : MonoBehaviour
                 StoryTextBehavior.SetDisplayText($"You defeated {EnemyNameText.text}!", new Color(0.002f, 0.424f, 0.002f, 1));
                 if (StoryTextBehavior.Clicked)
                 {
-                    SceneManager.LoadScene(SharedResources.SceneToLoadAfter);
+                    var fightEvent = ((JulieFightEvent)SharedResources.CurrentEvent);
+                    if (fightEvent.AlienJuiceReward > 0 || fightEvent.GearReward != null)
+                    {
+                        SceneManager.LoadScene("Reward");
+                    }
+                    else
+                    {
+                        SceneManager.LoadScene(SharedResources.SceneToLoadAfter);
+                    }
                 }
                 break;
 

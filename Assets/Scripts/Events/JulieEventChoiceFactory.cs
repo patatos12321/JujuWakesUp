@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Fighters;
+using Assets.Scripts.FightingGear;
 using Assets.Scripts.FightingMoves;
 using System.Collections.Generic;
 
@@ -16,7 +17,9 @@ namespace Assets.Scripts.Events
                     {
                         Name = "Octupus fight",
                         Description = "Fight the octopus",
-                        FighterType = FighterType.Pieuvre
+                        FighterType = FighterType.Pieuvre,
+                        AlienJuiceReward = 1,
+                        GearReward = new FightingGearOctopusLeg()
                     };
                 }
                 else if (Flags.CurrentStep == 2)
@@ -49,7 +52,9 @@ namespace Assets.Scripts.Events
                     {
                         Name = "Spaghetti Monster",
                         Description = "Eat the delicious treat",
-                        FighterType = FighterType.SpaghettiMonster
+                        FighterType = FighterType.SpaghettiMonster,
+                        AlienJuiceReward = 3,
+                        GearReward = new FightingGearSpaghettiMonsterArm()
                     };
                 }
             }

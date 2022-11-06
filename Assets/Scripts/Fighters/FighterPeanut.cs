@@ -1,3 +1,4 @@
+using Assets.Scripts.FightingGear;
 using Assets.Scripts.FightingMoves;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,5 +25,6 @@ namespace Assets.Scripts.Fighters
         public string BattleSongName => "";
 
         public string SpriteName => "Peanut";
+        public List<IFightingGear> FightingGear { get; private set; } = new List<IFightingGear>();
     }
 }

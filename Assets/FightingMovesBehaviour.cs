@@ -15,7 +15,8 @@ public class FightingMovesBehaviour : MonoBehaviour
     {
         for (int index = 0; index < MoveButtons.Length; index++)
         {
-            MoveButtons[index].onClick.AddListener(() => TaskOnClick(0));
+            var test = index;
+            MoveButtons[index].onClick.AddListener(() => TaskOnClick(test));
         }
     }
 
@@ -29,14 +30,15 @@ public class FightingMovesBehaviour : MonoBehaviour
                 MoveButtons[index].gameObject.SetActive(false);
             }
             else 
-            { 
-                MoveTexts[index].text = FightingMoves[index].MoveName;
+            {
+                MoveButtons[index].gameObject.SetActive(true);
+                MoveTexts[index].text = FightingMoves[index].MoveName + " - " + FightingMoves[index].Duration;
             }
         }
     }
 
     void TaskOnClick(int moveIndex)
     {
-        CombatBehaviour.PlayerMove = FightingMoves.First(f => f.MoveName == MoveTexts[moveIndex].text);
+        CombatBehaviour.PlayerMove = FightingMoves[moveIndex];
     }
 }
