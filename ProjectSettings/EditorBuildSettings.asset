@@ -21,6 +21,9 @@ EditorBuildSettings:
     path: Assets/Scenes/NewFighter.unity
     guid: aeef2da8daa5c7944b7d9ebffbdcfc17
   - enabled: 1
+    path: Assets/Scenes/Heal.unity
+    guid: 6c44e0d9de0383743aae829bdb2de497
+  - enabled: 1
     path: Assets/Scenes/Reward.unity
     guid: fcc1cc82d72f0424fb43cca11e5d1451
   - enabled: 1

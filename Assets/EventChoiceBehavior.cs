@@ -54,6 +54,9 @@ public class EventChoiceBehavior : MonoBehaviour
             case JulieEventType.NewFighter:
                 SceneManager.LoadScene("NewFighter");
                 break;
+            case JulieEventType.Heal:
+                SceneManager.LoadScene("Heal");
+                break;
             default:
                 break;
         }

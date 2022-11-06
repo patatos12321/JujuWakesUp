@@ -243,7 +243,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentTurn: 0
-  NbFramePerTurn: 80
+  NbFramePerTurn: 40
   CurrentNbFrameForTurn: 0
   StoryTextBehavior: {fileID: 436995935}
   FightState: 0

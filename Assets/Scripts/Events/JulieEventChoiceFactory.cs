@@ -36,12 +36,7 @@ namespace Assets.Scripts.Events
                 }
                 else
                 {
-                    yield return new JulieFightEvent()
-                    {
-                        Name = "Deviljoe fight",
-                        Description = "Attempt to overcome the madness",
-                        FighterType = FighterType.Deviljoe,
-                    };
+                    yield return new JulieHealEvent();
                     yield return new JulieFightEvent()
                     {
                         Name = "Octupus fight",
