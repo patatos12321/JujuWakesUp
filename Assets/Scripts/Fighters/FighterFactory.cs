@@ -28,9 +28,8 @@ namespace Assets.Scripts.Fighters
                 case FighterType.SpaghettiMonster:
                     return new FighterSpaghettiMonsterFactory().GetFighter();
                 default:
-                    break;
+                    throw new Exception("This should not happen! Unable to get a fighter.");
             }
-            throw new Exception("This should not happen! Unable to get a fighter.");
         }
 
         #region oldCode

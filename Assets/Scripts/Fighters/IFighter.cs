@@ -13,5 +13,6 @@ namespace Assets.Scripts.Fighters
         List<IFightingGear> FightingGear { get; }
         string BattleSongName { get; }
         string SpriteName { get; }
+        int MaxInventorySize { get; }
     }
 }
