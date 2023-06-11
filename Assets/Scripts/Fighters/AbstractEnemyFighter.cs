@@ -14,7 +14,7 @@ namespace Assets.Scripts.Fighters
         public IFightingMove[] KnownMoves;
         public int CurrentHp { get; set; }
         public List<IFightingMove> FightingMoves => KnownMoves.ToList();
-        public List<IFightingGear> FightingGear => new List<IFightingGear>();
+        public List<IFightingGear> FightingGears => new List<IFightingGear>();
         public int MaxInventorySize => 0;
     }
 }

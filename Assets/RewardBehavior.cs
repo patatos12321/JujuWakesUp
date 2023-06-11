@@ -49,7 +49,7 @@ public class RewardBehavior : MonoBehaviour
     private void AddToInventory()
     {
         //SharedResources.Inventory.FightingGears.Add(newFightingGear);
-        SharedResources.PlayerFighters[0].FightingGear.Add(newFightingGear);
+        SharedResources.PlayerFighters[0].FightingGears.Add(newFightingGear);
         SharedResources.Inventory.NbAlienJuice += nbAlienJuice;
         SceneManager.LoadScene(SharedResources.SceneToLoadAfter);
     }

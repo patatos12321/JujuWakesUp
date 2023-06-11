@@ -36,7 +36,9 @@ public class TeamViewerBehavior : MonoBehaviour
         {
             if (i >= filteredFighters.Length)
             {
-                FighterViewers[i].Disable();
+                var viewer = FighterViewers[i];
+                if (viewer != null)
+                    FighterViewers[i].Disable();
             }
             else
             {

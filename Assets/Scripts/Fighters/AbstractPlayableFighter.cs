@@ -12,8 +12,8 @@ namespace Assets.Scripts.Fighters
             
         }
         public IEnumerable<IFightingMove> KnownMoves;
-        public List<IFightingGear> FightingGear { get; private set; } = new List<IFightingGear>();
-        public List<IFightingMove> FightingMoves => KnownMoves.Union(FightingGear.Where(fg => fg.FightingMove != null).Select(fg => fg.FightingMove)).Distinct().ToList();
+        public List<IFightingGear> FightingGears { get; private set; } = new List<IFightingGear>();
+        public List<IFightingMove> FightingMoves => KnownMoves.Union(FightingGears.Where(fg => fg.FightingMove != null).Select(fg => fg.FightingMove)).Distinct().ToList();
         public int CurrentHp { get; set; }
 
     }

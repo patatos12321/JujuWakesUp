@@ -62,6 +62,12 @@ public class EventChoiceBehavior : MonoBehaviour
         }
     }
 
+    public void LoadInventoryManager()
+    {
+        SharedResources.SceneToLoadAfter = SceneManager.GetActiveScene().name;
+        SceneManager.LoadScene("Inventory");
+    }
+
     // Update is called once per frame
     void Update()
     {

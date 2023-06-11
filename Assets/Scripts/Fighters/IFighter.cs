@@ -10,7 +10,7 @@ namespace Assets.Scripts.Fighters
         int MaxHp { get; }
         int CurrentHp { get; set; }
         List<IFightingMove> FightingMoves { get; }
-        List<IFightingGear> FightingGear { get; }
+        List<IFightingGear> FightingGears { get; }
         string BattleSongName { get; }
         string SpriteName { get; }
         int MaxInventorySize { get; }
