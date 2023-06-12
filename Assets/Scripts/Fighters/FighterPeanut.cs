@@ -11,6 +11,6 @@ namespace Assets.Scripts.Fighters
         //Peanut a pas de tune spéciale
         public string BattleSongName => "";
         public string SpriteName => "Peanut";
-        public int MaxInventorySize => 0;
+        public int MaxInventorySize => 1;
     }
 }

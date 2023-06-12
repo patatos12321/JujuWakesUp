@@ -13,12 +13,13 @@ public class GearListViewerBehavior : MonoBehaviour
     public GearViewerBehavior SelectableGearBehaviorPrefab;
     //Functional Stuff
     public IFightingGear SelectedGear { get; private set; }
+    public InventoryManagerBehavior InventoryManagerBehavior;
     public List<IFightingGear> FightingGears
     {
         get { return _fightingGears; }
         set
         {
-            CleanupViewers();
+            Cleanup();
             _fightingGears = value;
             DrawGear();
         }
@@ -37,6 +38,7 @@ public class GearListViewerBehavior : MonoBehaviour
     public void SelectGear(IFightingGear selectedGear)
     {
         SelectedGear = selectedGear;
+        InventoryManagerBehavior.SelectGear(selectedGear);
         foreach (var gearViewer in _gearViewers)
         {
             if (gearViewer.Gear != selectedGear)
@@ -63,10 +65,12 @@ public class GearListViewerBehavior : MonoBehaviour
         }
     }
 
-    private void CleanupViewers()
+    private void Cleanup()
     {
         foreach (var gearViewer in _gearViewers)
             DestroyImmediate(gearViewer.gameObject);
+        _gearViewers.Clear();
+        SelectedGear = null;
     }
 
     private void OnDrawGizmos()
